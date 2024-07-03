@@ -1,7 +1,7 @@
 ---
 parameters:
  - name: BASE_URL
-  type: string
+ - type: string
 
 jobs:
  - job: test
