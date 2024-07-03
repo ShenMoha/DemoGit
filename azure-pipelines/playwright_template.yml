@@ -1,23 +1,19 @@
 ---
 parameters:
  - name: BASE_URL
- - type: string
 
 jobs:
  - job: test
-   displayname: Run Playwright Tests
    steps:
     - download: none
     - checkout: self
     - task: NodeTool@0
-      displayname: 'Use Node Version 16'
       inputs:
-        versionSpec: 16.x
+      versionSpec: 16.x
 
-   - script: |
+    - script: |
           npm ci
         displayName: "NPM Install"
-
     - script: |
           npx playwright install --with-deps
         displayName: "Playwright Install"
@@ -30,26 +26,26 @@ jobs:
         displayName: "Run Playwright Tests"
         continueOnError: true
 
-      - task: ArchiveFiles@2
+    - task: ArchiveFiles@2
         displayName: 'Add playwright-report to Archive'
         inputs:
           rootFolderOrFile: '$(Pipeline.Workspace)/s/playwright-report/'
           archiveFile: '$(Agent.TempDirectory)/$(Build.BuildId)_$(System.JobAttempt)$(System.StageAttempt).zip'
 
-      - task: ArchiveFiles@2
+    - task: ArchiveFiles@2
         displayName: 'Add test-results to Archive'
         inputs:
           rootFolderOrFile: '$(Pipeline.Workspace)/s/test-results/'
           archiveFile: '$(Agent.TempDirectory)/$(Build.BuildId)_$(System.JobAttempt)$(System.StageAttempt).zip'
           replaceExistingArchive: false
 
-      - task: PublishPipelineArtifact@1
+    - task: PublishPipelineArtifact@1
         displayName: 'Publish Pipeline Artifacts'
         inputs:
           targetPath: '$(Agent.TempDirectory)/$(Build.BuildId)_$(System.JobAttempt)$(System.StageAttempt).zip'
           artifact: pipeline-artifacts
 
-      - task: PublishTestResults@2
+    - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'JUnit'
           testResultsFiles: '$(Pipeline.Workspace)/s/results.xml'
