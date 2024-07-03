@@ -1,5 +1,5 @@
 ---
-parameter:
+parameters:
  - name: BASE_URL
   type: string
 
@@ -18,11 +18,11 @@ jobs:
           npm ci
         displayName: "NPM Install"
 
-      - script: |
+    - script: |
           npx playwright install --with-deps
         displayName: "Playwright Install"
 
-      - script: |
+    - script: |
           set BASE_URL=${{ parameters.BASE_URL }}
           set CI=true
           set PLAYWRIGHT_JUNIT_OUTPUT_NAME=results.xml
