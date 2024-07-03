@@ -20,24 +20,23 @@ jobs:
           set CI=true
           set PLAYWRIGHT_JUNIT_OUTPUT_NAME=results.xml
           npx playwright test
-         displayName: "Run Playwright Tests"
          continueOnError: true
 
     - task: ArchiveFiles@2
-        displayName: 'Add playwright-report to Archive'
+       
         inputs:
           rootFolderOrFile: '$(Pipeline.Workspace)/s/playwright-report/'
           archiveFile: '$(Agent.TempDirectory)/$(Build.BuildId)_$(System.JobAttempt)$(System.StageAttempt).zip'
 
     - task: ArchiveFiles@2
-        displayName: 'Add test-results to Archive'
+    
         inputs:
           rootFolderOrFile: '$(Pipeline.Workspace)/s/test-results/'
           archiveFile: '$(Agent.TempDirectory)/$(Build.BuildId)_$(System.JobAttempt)$(System.StageAttempt).zip'
           replaceExistingArchive: false
 
     - task: PublishPipelineArtifact@1
-        displayName: 'Publish Pipeline Artifacts'
+
         inputs:
           targetPath: '$(Agent.TempDirectory)/$(Build.BuildId)_$(System.JobAttempt)$(System.StageAttempt).zip'
           artifact: pipeline-artifacts
@@ -47,6 +46,6 @@ jobs:
           testResultsFormat: 'JUnit'
           testResultsFiles: '$(Pipeline.Workspace)/s/results.xml'
           testRunTitle: 'Playwright ADO Demo - $(System.StageName)'
-        displayName: 'Publish Test Results'
+      
 
 ...
